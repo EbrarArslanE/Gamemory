@@ -19,7 +19,7 @@ app.use('/oyunTanimlari', express.static(path.join(__dirname, 'app/pages/tanimla
 const OYUN_SORGU = path.join(__dirname, '../database/DataList/oyunListesi.json');
 
 
-// fs.readFile(OYUN_SORGU, 'utf8', (err, data) => {
+// fs.readFile(<sorguyu buraya yaz kontrol için>, 'utf8', (err, data) => {
 //   if(err) return console.error('Dosya okunamadı:', err);
 //   console.log('Dosya başarıyla okundu:', data);
 // });
@@ -30,8 +30,8 @@ const OYUN_SORGU = path.join(__dirname, '../database/DataList/oyunListesi.json')
 // const UPLOADS_DIR = path.join(__dirname, '/data/DATA/uploads');
 
 // const storage = multer.diskStorage({
-//   destination: (req, file, cb) => cb(null, UPLOADS_DIR),
-//   filename: (req, file, cb) => {
+  //   destination: (req, file, cb) => cb(null, UPLOADS_DIR),
+  //   filename: (req, file, cb) => {
 //     // Dosya ismini benzersiz yapmak için zaman damgası ekle
 //     const uniqueName = Date.now() + '-' + file.originalname.replace(/\s+/g, '_');
 //     cb(null, uniqueName);
@@ -40,6 +40,7 @@ const OYUN_SORGU = path.join(__dirname, '../database/DataList/oyunListesi.json')
 
 // const upload = multer({ storage });
 
+// TODO resim yükleme servisi düzenlenecek!
 return true;
 
 
