@@ -24,6 +24,25 @@ const OYUN_SORGU = path.join(__dirname, '../database/DataList/oyunListesi.json')
 //   console.log('Dosya başarıyla okundu:', data);
 // });
 
+// TODO resim yükleme servisi düzenlenecek!
+
+// const multer = require('multer');
+// const UPLOADS_DIR = path.join(__dirname, '/data/DATA/uploads');
+
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => cb(null, UPLOADS_DIR),
+//   filename: (req, file, cb) => {
+//     // Dosya ismini benzersiz yapmak için zaman damgası ekle
+//     const uniqueName = Date.now() + '-' + file.originalname.replace(/\s+/g, '_');
+//     cb(null, uniqueName);
+//   }
+// });
+
+// const upload = multer({ storage });
+
+return true;
+
+
 
 // ID dosya yolu
 const OYUN_ID_OLUSTUR  = path.join(__dirname, '../database/ID_List/oyunID.txt');
@@ -204,6 +223,19 @@ app.post('/oyunListesi/oyunSil', (req, res) => {
   });
 });
 
+
+// TODO resim yükleme servisi düzenlenecek!
+return false
+app.post('/diger/resimYukle', upload.single('e_resim'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ message: 'Dosya yüklenemedi.' });
+  }
+  res.status(200).json({ 
+    message: 'Dosya yüklendi.',
+    filePath: '/data/DATA/uploads/' + req.file.filename
+  });
+});
+return true;
 
 app.listen(PORT, () => {
   console.log(`🚀 Server ${PORT} portunda çalışıyor`);
