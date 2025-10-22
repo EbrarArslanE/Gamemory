@@ -1,0 +1,241 @@
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+/* Modal Genel */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  justify-content: center;
+  align-items: center;
+  font-family: 'Poppins', sans-serif; /* Güzel font */
+}
+
+.modal-content {
+  border: 1px solid var(--dark);
+  background-color: whitesmoke;
+  border-radius: 10px;
+  color: #0c0c1e;
+  padding: 24px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  font-family: 'Poppins', sans-serif; /* Fontu modal içerisine de uygula */
+}
+
+.modal-content h2 {
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+.modal-content label {
+  display: block;
+  margin-top: 12px;
+  font-weight: 500;
+}
+
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  padding: 8px 12px;
+  margin-top: 4px;
+  border: 1px solid var(--grey);
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: 'Poppins', sans-serif; /* Input ve textarea font */
+}
+
+.modal-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  font-family: 'Poppins', sans-serif; /* Butonlar için de */
+}
+
+/* Modal Input Grup */
+.modal .group {
+  display: flex;
+  align-items: center;
+  position: relative;
+  width: 100%;
+  margin-top: 12px;
+}
+
+.modal .group .input {
+  width: 100%;
+  height: 40px;
+  padding: 0 1rem;
+  padding-left: 2.5rem; /* İkon için boşluk */
+  border: 1px solid #0c0c1e; /* Ufak border koyduk */
+  border-radius: 8px;
+  outline: none;
+  background-color: #f3f3f4;
+  color: #0d0c22;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+.modal .group .input::placeholder {
+  color: #9e9ea7;
+  font-family: 'Poppins', sans-serif;
+}
+
+.modal .group .input:focus,
+.modal .group .input:hover {
+  /* border-color: #0c0c1e; Border sabit kalsın */
+  background-color: #fff;
+  box-shadow: 0 0 6px 3px rgba(88, 166, 255, 0.25); /* Soft mavi glow */
+}
+
+.modal .group i {
+  position: absolute;
+  left: 0.8rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9e9ea7;
+  font-size: 1rem;
+  pointer-events: none; /* İkona tıklanmasını engeller */
+}
+
+/* Modal Butonlar */
+.modal-buttons .btn {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--light);
+  border: 1px solid transparent;
+}
+
+/* Ortak hover efekti */
+.modal-buttons .btn:hover {
+  transform: scale(1.05);
+}
+
+/* Ekleme butonu */
+.modal-buttons .btn-add {
+  background: var(--blue);
+  color: #fff;
+}
+.modal-buttons .btn-add:hover {
+  background: #58A6FF;
+  color: #0c0c1e;
+}
+
+/* Silme butonu */
+.modal-buttons .btn-delete {
+  background: var(--red);
+  color: white;
+}
+.modal-buttons .btn-delete:hover {
+  background: #b9433f;
+}
+
+/* Kapat / İptal butonu (nötr ton) */
+.modal-buttons .btn-cancel {
+  background: #e0e0e0;
+  color: #0c0c1e;
+}
+.modal-buttons .btn-cancel:hover {
+  background: #d1d1d1;
+}
+
+/* Mevcut modal ve modal-content kodunu koruyorum */
+
+/* Modal Boyutları */
+.modal-content.small {
+  width: 250px;
+  max-width: 90%;
+}
+
+.modal-content.normal {
+  width: 400px;
+  max-width: 90%;
+}
+
+.modal-content.medium {
+  width: 600px;
+  max-width: 95%;
+}
+
+.modal-content.large {
+  width: 800px;
+  max-width: 95%;
+}
+
+.modal-content.xlarge {
+  width: 1000px;
+  max-width: 98%;
+}
+
+/* Eğer modal içeriği fazla uzun olursa kaydırma */
+.modal-content {
+  max-height: 90vh;
+  overflow-y: auto;
+  scrollbar-width: thin; /* Firefox */
+}
+
+.modal-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-content::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 3px;
+}
+
+.modal-content::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+/* Select Genel */
+.modal-content select {
+  width: 100%;
+  height: 40px;
+  padding: 0 1rem;
+  border: 1px solid #0c0c1e;
+  border-radius: 8px;
+  outline: none;
+  background-color: #f3f3f4;
+  color: #0d0c22;
+  font-family: 'Poppins', sans-serif;
+  font-size: 14px;
+  appearance: none; /* varsayılan oku gizler */
+  transition: all 0.3s ease;
+  cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, #0c0c1e 50%), 
+                    linear-gradient(135deg, #0c0c1e 50%, transparent 50%);
+  background-position: calc(100% - 20px) center, calc(100% - 15px) center;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+}
+
+/* Hover ve focus efektleri */
+.modal-content select:hover,
+.modal-content select:focus {
+  background-color: #fff;
+  box-shadow: 0 0 6px 3px rgba(88, 166, 255, 0.25);
+  border-color: #58A6FF;
+}
+
+/* Disabled durumu */
+.modal-content select:disabled {
+  background-color: #eaeaea;
+  color: #9e9ea7;
+  cursor: not-allowed;
+}
+
+/* Option stilleri */
+.modal-content select option {
+  background: #fff;
+  color: #0d0c22;
+  font-family: 'Poppins', sans-serif;
+}

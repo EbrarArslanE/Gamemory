@@ -1,0 +1,112 @@
+/* Genel tablo stilleri */
+.table-custom {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fafafa; /* Yumuşak gri arka plan */
+  border-radius: 6px;
+  overflow: hidden;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 0 6px rgba(0,0,0,0.05);
+  border: 1px solid #ccc; /* Belirgin kenar */
+}
+
+.table-custom thead {
+  background: #e9ecef; /* Açık gri başlık */
+  color: #111;
+  text-align: center;
+  border-bottom: 2px solid #ccc;
+}
+
+.table-custom thead th {
+  padding: 10px 12px;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: .4px;
+  border-left: 2px solid #ccc;
+}
+
+.table-custom tbody tr {
+  border-bottom: 1px solid #ddd;
+  transition: background 0.2s ease;
+
+}
+
+.table-custom tbody tr:hover {
+  background: #f0f0f0; /* Hafif hover efekti */
+}
+
+.table-custom td {
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #333;
+  border-right: 1px solid #ddd;
+  background: #fff;
+}
+.table-custom td:last-child {
+  border-right: none;
+}
+
+/* Durum etiketleri */
+.table-custom .status {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-align: center;
+  color: #fff;
+}
+
+.table-custom .status.success {
+  background: #4eae5c; /* Gri mavi ton */
+}
+
+.table-custom .status.warning {
+  background: #b80000; /* Soluk sarımsı ton */
+  color: white;
+}
+
+.table-custom .status.danger {
+  background: #a94442; /* Daha mat kırmızı */
+}
+
+/* Tablo responsive */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Tablo butonları */
+.table-custom .btn {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+  color: #111;
+  min-width: 80px;
+  text-align: center;
+  border: 1px solid #bbb;
+  background: #f8f8f8;
+}
+
+.table-custom .btn:hover {
+  background: #e2e2e2;
+  transform: scale(1.03);
+}
+
+/* Renk varyasyonları */
+.table-custom .btn-edit {
+  border-color: #888;
+}
+.table-custom .btn-add {
+  border-color: #888;
+}
+.table-custom .btn-delete {
+  border-color: #888;
+}

@@ -1,0 +1,252 @@
+/* Uzunluk (width) */
+.w-3    { width: 3%; }
+.w-5    { width: 5%; }
+
+.w-10   { width: 10%; }
+.w-12   { width: 12%; }
+.w-13   { width: 13%; }
+.w-15   { width: 15%; }
+
+.w-20   { width: 20%; }
+.w-22   { width: 22%; }
+.w-25   { width: 25%; }
+
+.w-30   { width: 30%; }
+.w-32   { width: 32%; }
+.w-35   { width: 35%; }
+
+.w-40   { width: 40%; }
+.w-42   { width: 42%; }
+.w-45   { width: 45%; }
+
+.w-50   { width: 50%; }
+.w-52   { width: 52%; }
+.w-55   { width: 55%; }
+
+.w-60   { width: 60%; }
+.w-62   { width: 62%; }
+.w-65   { width: 65%; }
+.w-68   { width: 68%; }
+
+.w-70   { width: 70%; }
+.w-72   { width: 72%; }
+.w-75   { width: 75%; }
+
+.w-80   { width: 80%; }
+.w-82   { width: 82%; }
+.w-84   { width: 84%; }
+.w-85   { width: 85%; }
+.w-86   { width: 86%; }
+
+.w-90   { width: 90%; }
+.w-92   { width: 92%; }
+.w-95   { width: 95%; }
+.w-100  { width: 100%; }
+
+/* Sabit Width */
+.w-100px { width: 100px; }
+.w-200px { width: 200px; }
+.w-300px { width: 300px; }
+
+/* Yükseklik (percent-based) */
+.h-5    { height: 5%; }
+.h-3    { height: 3%; }
+
+.h-10   { height: 10%; }
+.h-12   { height: 12%; }
+.h-15   { height: 15%; }
+
+.h-20   { height: 20%; }
+.h-22   { height: 22%; }
+.h-25   { height: 25%; }
+
+.h-30   { height: 30%; }
+.h-32   { height: 32%; }
+.h-35   { height: 35%; }
+
+.h-40   { height: 40%; }
+.h-42   { height: 42%; }
+.h-45   { height: 45%; }
+
+.h-50   { height: 50%; }
+.h-52   { height: 52%; }
+.h-55   { height: 55%; }
+
+.h-60   { height: 60%; }
+.h-62   { height: 62%; }
+.h-65   { height: 65%; }
+
+.h-70   { height: 70%; }
+.h-72   { height: 72%; }
+.h-75   { height: 75%; }
+
+.h-80   { height: 80%; }
+.h-82   { height: 82%; }
+.h-85   { height: 85%; }
+
+.h-90   { height: 90%; }
+.h-92   { height: 92%; }
+.h-95   { height: 95%; }
+.h-100  { height: 100%; }
+
+/* Yükseklik (vh / px) */
+.h-100vh { height: 100vh; }
+.h-50vh  { height: 50vh; }
+.h-25vh  { height: 25vh; }
+
+.h-20px { height: 20px; }
+.h-23px { height: 23px; }
+.h-25px { height: 25px; }
+
+.h-30px { height: 30px; }
+.h-33px { height: 33px; }
+.h-35px { height: 35px; }
+
+.h-50px { height: 50px; }
+.h-53px { height: 53px; }
+.h-55px { height: 55px; }
+
+.h-100px { height: 100px; }
+.h-110px { height: 110px; }
+.h-150px { height: 150px; }
+
+.h-200px { height: 200px; }
+.h-230px { height: 230px; }
+.h-250px { height: 250px; }
+
+.h-300px { height: 300px; }
+.h-330px { height: 330px; }
+.h-350px { height: 350px; }
+
+.h-400px { height: 400px; }
+.h-440px { height: 440px; }
+.h-450px { height: 450px; }
+
+.h-500px { height: 500px; }
+.h-520px { height: 520px; }
+.h-550px { height: 550px; }
+
+.h-600px { height: 600px; }
+
+.h-700px { height: 700px; }
+
+.h-800px { height: 800px; }
+
+.h-900px { height: 900px; }
+
+.h-1000px { height: 1000px; }
+
+/* Min / Max yükseklik */
+.min-h-100 { min-height: 100%; }
+.max-h-100 { max-height: 100%; }
+
+/* Flex Ayarları */
+.d-flex       { display: flex; }
+.inline-flex { display: inline-flex; }
+.flex-row   { flex-direction: row; }
+.flex-col   { flex-direction: column; }
+.flex-wrap  { flex-wrap: wrap; }
+.flex-nowrap { flex-wrap: nowrap; }
+
+/* Justify Content */
+.justify-start   { justify-content: flex-start; }
+.justify-center  { justify-content: center; }
+.justify-end     { justify-content: flex-end; }
+.justify-between { justify-content: space-between; }
+.justify-around  { justify-content: space-around; }
+.justify-evenly  { justify-content: space-evenly; }
+
+/* Align Items */
+.items-start    { align-items: flex-start; }
+.items-center   { align-items: center; }
+.items-end      { align-items: flex-end; }
+.items-stretch  { align-items: stretch; }
+.items-baseline { align-items: baseline; }
+
+/* Gap */
+.gap-0  { gap: 0px; }
+.gap-2  { gap: 2px; }
+.gap-4  { gap: 4px; }
+.gap-6  { gap: 6px; }
+.gap-8  { gap: 8px; }
+.gap-12 { gap: 12px; }
+.gap-16 { gap: 16px; }
+.gap-20 { gap: 20px; }
+.gap-22 { gap: 22px; }
+.gap-24 { gap: 24px; }
+.gap-26 { gap: 26px; }
+.gap-32 { gap: 32px; }
+.gap-40 { gap: 40px; }
+
+/* Text Align */
+.text-center { text-align: center; }
+.text-left   { text-align: left; }
+.text-right  { text-align: right; }
+
+/* Margin */
+.m-0  { margin: 0px; }
+.m-10  { margin: 10px; }
+.mt-10 { margin-top: 10px; }
+.mt-20 { margin-top: 20px; }
+.mt-30 { margin-top: 30px; }
+.mt-40 { margin-top: 40px; }
+.mt-50 { margin-top: 50px; }
+.mt-60 { margin-top: 60px; }
+.mt-70 { margin-top: 70px; }
+.mt-80 { margin-top: 80px; }
+.mr-10 { margin-right: 10px; }
+.mb-10 { margin-bottom: 10px; }
+.ml-10 { margin-left: 10px; }
+.mx-10 { margin-left: 10px; margin-right: 10px; }
+.my-10 { margin-top: 10px; margin-bottom: 10px; }
+
+.m-20  { margin: 20px; }
+.p-20  { padding: 20px; }
+
+/* Padding */
+.pt-10 { padding-top: 10px; }
+.pr-10 { padding-right: 10px; }
+.pb-10 { padding-bottom: 10px; }
+.pl-10 { padding-left: 10px; }
+.px-10 { padding-left: 10px; padding-right: 10px; }
+.py-10 { padding-top: 10px; padding-bottom: 10px; }
+
+.p-5   { padding: 5px; }
+.p-10  { padding: 10px; }
+.p-11  { padding: 11px; }
+.p-20  { padding: 20px; }
+.p-30  { padding: 30px; }
+.p-40  { padding: 40px; }
+.p-50  { padding: 50px; }
+
+.bg-red       { background-color: red; }
+.bg-blue      { background-color: blue; }
+.bg-gray      { background-color: gray; }
+.bg-black     { background-color: black; }
+.bg-white     { background-color: white; }
+.bg-green     { background-color: green; }
+.bg-yellow    { background-color: yellow; }
+.bg-orange    { background-color: orange; }
+.bg-purple    { background-color: purple; }
+.bg-pink      { background-color: pink; }
+.bg-brown     { background-color: brown; }
+.bg-cyan      { background-color: cyan; }
+.bg-magenta   { background-color: magenta; }
+.bg-lime      { background-color: lime; }
+.bg-teal      { background-color: teal; }
+.bg-navy      { background-color: navy; }
+.bg-maroon    { background-color: maroon; }
+.bg-olive     { background-color: olive; }
+.bg-silver    { background-color: silver; }
+.bg-gold      { background-color: gold; }
+.bg-lightgray { background-color: lightgray; }
+.bg-darkgray  { background-color: darkgray; }
+.bg-indigo    { background-color: indigo; }
+.bg-aqua      { background-color: aqua; }
+.bg-beige     { background-color: beige; }
+
+
+
+.swal2-popup {
+  font-family: 'Poppins', sans-serif !important;
+}

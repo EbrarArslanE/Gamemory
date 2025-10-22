@@ -1,15 +1,40 @@
-const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
+// const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
 
-allSideMenu.forEach(item => {
-    const li = item.parentElement;
+// Sayfa yüklendiğinde aktif menüyü belirleme
+window.addEventListener('load', function() {
+    const allSideMenu = document.querySelectorAll('#sidebar .side-menu.top li a');
 
-    item.addEventListener('click', function () {
-        allSideMenu.forEach(i => {
-            i.parentElement.classList.remove('active');
-        })
-        li.classList.add('active');
-    })
+    // Aktif menüyü temizle
+    allSideMenu.forEach(item => item.parentElement.classList.remove('active'));
+
+    const path = window.location.pathname;
+
+    allSideMenu.forEach(item => {
+        const li = item.parentElement;
+
+        // URL’e göre aktif class
+        if(path === '/' && item.textContent.trim() === 'Ana Sayfa') {
+            li.classList.add('active');
+        }
+        if(path === '/oyunTanimlari/oyunTanimlari.html' && item.textContent.trim() === 'Oyun Tanımları') {
+            li.classList.add('active');
+        }
+        if(path === '/geribildirimler.html' && item.textContent.trim() === 'Geri Bildirimler') {
+            li.classList.add('active');
+        }
+        if(path === '/kullanicilar.html' && item.textContent.trim() === 'Kullanıcılar') {
+            li.classList.add('active');
+        }
+
+        // click event
+        item.addEventListener('click', function () {
+            allSideMenu.forEach(i => i.parentElement.classList.remove('active'));
+            li.classList.add('active');
+        });
+    });
 });
+
+
 
 // TOGGLE SIDEBAR
 const menuBar = document.querySelector('#content nav .bx.bx-menu');
@@ -53,15 +78,34 @@ searchButton.addEventListener('click', function (e) {
 })
 
 // Dark Mode Switch
+// Dark Mode Switch
 const switchMode = document.getElementById('switch-mode');
 
 switchMode.addEventListener('change', function () {
     if (this.checked) {
         document.body.classList.add('dark');
+        localStorage.setItem('darkMode', 'enabled');
     } else {
         document.body.classList.remove('dark');
+        localStorage.setItem('darkMode', 'disabled');
     }
-})
+});
+
+// ✅ Sayfa açıldığında otomatik dark mode kontrolü
+window.addEventListener('load', () => {
+    const darkModeStatus = localStorage.getItem('darkMode');
+
+    // Eğer daha önce dark mode seçilmişse veya otomatik istiyorsak
+    if (darkModeStatus === 'enabled' || darkModeStatus === null) {
+        document.body.classList.add('dark');
+        switchMode.checked = true;
+        localStorage.setItem('darkMode', 'enabled');
+    } else {
+        document.body.classList.remove('dark');
+        switchMode.checked = false;
+    }
+});
+
 
 // Notification Menu Toggle
 document.querySelector('.notification').addEventListener('click', function () {
