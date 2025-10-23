@@ -7,6 +7,7 @@
 	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 	<link rel="stylesheet" href="/assets/style/main.css">
+	<link rel="stylesheet" href="/assets/style/resim-yukle.css">
 	<link rel="stylesheet" href="/assets/style/table.css">
 	<link rel="stylesheet" href="/assets/style/settings.css">
 	<link rel="stylesheet" href="/assets/style/modal.css">
@@ -89,62 +90,103 @@
 	</section>
 
 	<!-- Modal Arkaplan -->
-  <div id="oyunModal" class="modal">
-    <div class="modal-content xlarge">
+<div id="oyunModal" class="modal">
+  <div class="modal-content xlarge">
+    
+    <!-- Tab butonları -->
+    <div class="modal-tabs">
+      <button type="button" class="tab-link active" data-tab="tab-input">Bilgiler</button>
+      <button type="button" class="tab-link" data-tab="tab-gorseller">Seçilen Görseller</button>
+    </div>
+    
     <h2>Oyun Ekleme Formu</h2>
-    <form id="oyunForm">
-      <div class="d-flex w-100 flex-row gap-2">
-        <div class="d-flex gap-2 w-50 flex-col justify-start items-start">
-          <label for="e_oyun_adi">Oyun Adı: <span style="color:red;">*</span></label>
-          <input placeholder="Oyun Adı Giriniz." id="e_oyun_adi" type="text" class="input">
-        </div>
-      
-        <div class="d-flex gap-2 w-50 flex-col justify-start items-start">
-          <label for="e_eklenme_tarihi">Oyun Eklenme Tarihi: <span style="color:red;">*</span></label>
-          <input placeholder="Oyun Eklenme Tarihi Giriniz." id="e_eklenme_tarihi" name="e_eklenme_tarihi" type="date" required>
+    <!-- Tab içerikleri -->
+    <div id="tab-input" class="tab-content active">
+      <form id="oyunForm">
+        <div class="d-flex w-100 flex-row gap-2">
+          <div class="d-flex gap-2 w-50 flex-col justify-start items-start">
+            <label for="e_oyun_adi">Oyun Adı: <span style="color:red;">*</span></label>
+            <input placeholder="Oyun Adı Giriniz." id="e_oyun_adi" type="text" class="input">
+          </div>
+
+          <div class="d-flex gap-2 w-50 flex-col justify-start items-start">
+            <label for="e_eklenme_tarihi">Oyun Eklenme Tarihi: <span style="color:red;">*</span></label>
+            <input placeholder="Oyun Eklenme Tarihi Giriniz." id="e_eklenme_tarihi" name="e_eklenme_tarihi" type="date" required>
+          </div>
         </div>
 
-      </div>
-      <div class="d-flex gap-2 flex-col justify-start items-start">
-        <label for="e_oyun_indirme_linki">Oyun Linki: <span style="color:red;">*</span></label>
-        <input placeholder="Oyun Linki Giriniz." id="e_oyun_indirme_linki" name="e_oyun_linki" type="text" required>
-      </div>
+        <div class="w-100 d-flex gap-2 items-center justify-center flex-row">
+          <div class="w-50">
+            <div class="d-flex gap-2 flex-col justify-start items-start">
+              <label for="e_oyun_indirme_linki">Oyun Linki: <span style="color:red;">*</span></label>
+              <input placeholder="Oyun Linki Giriniz." id="e_oyun_indirme_linki" name="e_oyun_linki" type="text" required>
+            </div>
+          </div>
 
-      <div class="d-flex w-100 flex-row gap-2">
-        <div class="d-flex gap-2 w-50 flex-col justify-start items-start">
-          <label for="e_oyun_kategorisi">Kategori: <span style="color:red;">*</span></label>
-          <select name="e_oyun_kategorisi" id="e_oyun_kategorisi">
-            <option value="Aksiyon">Aksiyon</option>
-            <option value="Macera">Macera</option>
-            <option value="Bulmaca">Bulmaca</option>
-            <option value="Spor">Spor</option>
-            <option value="Strateji">Strateji</option>
-            <option value="Hikaye">Hikaye</option>
-          </select>
+          <div class="w-50">          
+            <div class="d-flex gap-2 flex-col justify-start items-start">
+              <label for="e_boyut">Uygulama Boyutu:</label>
+              <input placeholder="Uygulama Boyutu Giriniz." id="e_boyut" type="text" class="input">
+            </div>
+          </div>
         </div>
-  
-        <div class="d-flex gap-2 w-50 flex-col justify-start items-start">
-          <label for="e_durum">Durum: <span style="color:red;">*</span></label>
-          <select name="e_durum" id="e_durum">
-            <option value="Aktif">Aktif</option>
-            <option value="Pasif">Pasif</option>
-          </select>
-        </div>
-      </div>
 
-      <div class="d-flex gap-2 flex-col justify-start items-start">
-        <label for="e_aciklama">Açıklama:</label>
-        <textarea  placeholder="Oyunun Açıklamasını Giriniz." id="e_aciklama" name="e_aciklama" rows="3"></textarea>
-      </div>
-      
-      <div class="modal-buttons">
-        <button type="submit" class="btn btn-add" onclick="islemiKaydet()"><i class='bx bx-save'></i> Kaydet</button>
-        <button type="button" class="btn btn-delete close"><i class='bx bx-x'></i> İptal</button>
+        <div class="w-100 d-flex flex-row gap-2"> 
+          <div class="d-flex gap-2 w-50 flex-col justify-start items-start">
+            <label for="e_oyun_kategorisi">Kategori: <span style="color:red;">*</span></label>
+            <select name="e_oyun_kategorisi" id="e_oyun_kategorisi">
+              <option value="">--- Seçiniz ---</option>
+              <option value="Aksiyon">Aksiyon</option>
+              <option value="Macera">Macera</option>
+              <option value="Bulmaca">Bulmaca</option>
+              <option value="Spor">Spor</option>
+              <option value="Strateji">Strateji</option>
+              <option value="Hikaye">Hikaye</option>
+            </select>
+          </div>
+
+          <div class="d-flex gap-2 w-50 flex-col justify-start items-start">
+            <label for="e_durum">Durum: <span style="color:red;">*</span></label>
+            <select name="e_durum" id="e_durum">
+              <option value="Aktif">Aktif</option>
+              <option value="Pasif">Pasif</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="w-100 gap-2 d-flex flex-col items-center justify-center">
+          <div class="w-100 gap-2 d-flex flex-col items-start justify-start">
+            <label for="e_aciklama">Açıklama:</label>
+            <textarea placeholder="Oyunun Açıklamasını Giriniz." id="e_aciklama" name="e_aciklama" rows="3"></textarea>
+          </div>
+        </div>
+
+        <div class="w-100 d-flex flex-col items-start justify-start">
+          <label for="e_oyun_gorseli">Görseller: <span style="color:gray; font-size: 12px;">Dosya PNG veya JPG formatında olmalıdır ve maksimum boyut 5MB'tir.</span></label>
+          <form class="form">
+            <label for="e_oyun_gorseli" class="drop-container w-100">
+              <span class="drop-title">Dosyaları buradan seçebilirsin.</span>
+              <input type="file" accept="image/*" id="e_oyun_gorseli" multiple>
+            </label>
+          </form>
+        </div>
+
+      </form>
+    </div>
+
+    <div id="tab-gorseller" class="tab-content">
+      <div id="secilenGorsellerContainer" class="w-100 d-flex flex-row gap-2 flex-wrap">
+        <div class="gorsel-listesi"></div>
       </div>
     </div>
-      
-  </form>
+
+    <div class="modal-buttons">
+      <button type="button" class="btn btn-add" onclick="islemiKaydet()"><i class='bx bx-save'></i> Kaydet</button>
+      <button type="button" class="btn btn-delete close"><i class='bx bx-x'></i> İptal</button>
+    </div>
   </div>
+</div>
+
 </div>
 
   <script src="/pages/tanimlar/oyunTanimlari/oyunTanimlari.js"></script>

@@ -1,7 +1,8 @@
-console.clear()
+// console.clear()
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const multer = require('multer');
 
 const app = express();
 const PORT = 2222;
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'app')));
 
 app.get('/', (req, res) => {res.sendFile(path.join(__dirname, 'app/pages/anasayfa/anasayfa.html'));});
+app.use('/data/DATA/uploads', express.static(path.join(__dirname, '../database/Uploads')));
 
 app.use('/oyunTanimlari', express.static(path.join(__dirname, 'app/pages/tanimlar/oyunTanimlari')));
 
@@ -24,25 +26,25 @@ const OYUN_SORGU = path.join(__dirname, '../database/DataList/oyunListesi.json')
 //   console.log('Dosya başarıyla okundu:', data);
 // });
 
-// TODO resim yükleme servisi düzenlenecek!
 
-// const multer = require('multer');
-// const UPLOADS_DIR = path.join(__dirname, '/data/DATA/uploads');
+const UPLOADS_DIR = path.join(__dirname, '../database/Uploads');
 
-// const storage = multer.diskStorage({
-  //   destination: (req, file, cb) => cb(null, UPLOADS_DIR),
-  //   filename: (req, file, cb) => {
-//     // Dosya ismini benzersiz yapmak için zaman damgası ekle
-//     const uniqueName = Date.now() + '-' + file.originalname.replace(/\s+/g, '_');
-//     cb(null, uniqueName);
-//   }
-// });
+// 🔹 Klasör yoksa oluştur
+if (!fs.existsSync(UPLOADS_DIR)) {
+  fs.mkdirSync(UPLOADS_DIR, { recursive: true });
+}
 
-// const upload = multer({ storage });
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, UPLOADS_DIR),
+  filename: (req, file, cb) => {
+    // Dosya ismini benzersiz yapmak için zaman damgası ekle
+    const uniqueName = Date.now() + '-' + file.originalname.replace(/\s+/g, '_');
+    cb(null, uniqueName);
+  }
+});
 
-// TODO resim yükleme servisi düzenlenecek!
-return true;
-
+// 🔹 Çoklu dosya yüklemeyi destekle
+const upload = multer({ storage });
 
 
 // ID dosya yolu
@@ -53,10 +55,10 @@ async function GET_OYUN_ID() {
   try {
     let data;
     try {
-      data = await fs.readFile(OYUN_ID_OLUSTUR, 'utf8');
+      data = await fs.promises.readFile(OYUN_ID_OLUSTUR, 'utf8');
     } catch (err) {
       if (err.code === 'ENOENT') {
-        await fs.writeFile(OYUN_ID_OLUSTUR, '1', 'utf8');
+        await fs.promises.writeFile(OYUN_ID_OLUSTUR, '1', 'utf8');
         return 1;
       }
       throw err;
@@ -66,7 +68,7 @@ async function GET_OYUN_ID() {
     if (isNaN(currentId)) currentId = 0;
 
     const newId = currentId + 1;
-    await fs.writeFile(OYUN_ID_OLUSTUR, newId.toString(), 'utf8');
+    await fs.promises.writeFile(OYUN_ID_OLUSTUR, newId.toString(), 'utf8');
     return newId;
 
   } catch (err) {
@@ -90,12 +92,39 @@ app.get('/oyunListesi/oyunListele', async (req, res) => {
 // ! EKLEME
 app.post('/oyunListesi/oyunEkle', async (req, res) => {
   try {
-    const { e_oyun_adi, e_oyun_indirme_linki, e_durum, e_aciklama, e_oyun_kategorisi, e_eklenme_tarihi } = req.body;
+    const {
+      e_oyun_adi,
+      e_oyun_indirme_linki,
+      e_durum,
+      e_aciklama,
+      e_oyun_kategorisi,
+      e_eklenme_tarihi,
+      e_boyut,
+      e_oyun_gorseli
+    } = req.body;
 
     if (!e_oyun_adi || !e_durum) {
       return res.status(400).json({ hata: 'Eksik oyun adı veya durum bilgisi' });
     }
 
+    // e_oyun_gorseli güvenli şekilde parse et
+    let oyunGorselleri = [];
+    if (e_oyun_gorseli) {
+      if (typeof e_oyun_gorseli === 'string') {
+        try {
+          oyunGorselleri = JSON.parse(e_oyun_gorseli);
+          if (!Array.isArray(oyunGorselleri)) oyunGorselleri = [oyunGorselleri];
+        } catch {
+          oyunGorselleri = [e_oyun_gorseli];
+        }
+      } else if (Array.isArray(e_oyun_gorseli)) {
+        oyunGorselleri = e_oyun_gorseli;
+      } else {
+        oyunGorselleri = [e_oyun_gorseli];
+      }
+    }
+
+    // ID üretme kısmı aynen
     const yeniID = await GET_OYUN_ID();
 
     const yeniOyunTanimi = {
@@ -105,19 +134,23 @@ app.post('/oyunListesi/oyunEkle', async (req, res) => {
       e_durum,
       e_aciklama,
       e_oyun_kategorisi,
-      e_eklenme_tarihi
+      e_boyut,
+      e_eklenme_tarihi,
+      e_oyun_gorseli: oyunGorselleri
     };
 
+    // JSON dosyadan oku
     let oyunListesi = [];
     try {
-      const fileData = await fs.readFile(OYUN_SORGU, 'utf8');
-      oyunListesi = fileData ? JSON.parse(fileData) : [];
-    } catch (e) {
-      console.warn('Oyun listesi okunamadı, yeni liste oluşturuluyor.', e);
+      const data = await fs.promises.readFile(OYUN_SORGU, 'utf8');
+      oyunListesi = data ? JSON.parse(data) : [];
+    } catch {
+      oyunListesi = [];
     }
 
+    // Yeni oyunu ekle
     oyunListesi.push(yeniOyunTanimi);
-    await fs.writeFile(OYUN_SORGU, JSON.stringify(oyunListesi, null, 2), 'utf8');
+    await fs.promises.writeFile(OYUN_SORGU, JSON.stringify(oyunListesi, null, 2), 'utf8');
 
     res.json({ mesaj: 'Oyun başarıyla oluşturuldu!', e_id: yeniID });
 
@@ -126,6 +159,8 @@ app.post('/oyunListesi/oyunEkle', async (req, res) => {
     res.status(500).json({ hata: 'Oyun kaydedilemedi' });
   }
 });
+
+
 
 //! DÜZENLEME
 app.post('/oyunListesi/oyunDuzenle', (req, res) => {
@@ -136,7 +171,9 @@ app.post('/oyunListesi/oyunDuzenle', (req, res) => {
     e_durum,
     e_aciklama,
     e_oyun_kategorisi,
-    e_eklenme_tarihi
+    e_eklenme_tarihi,
+    e_boyut,
+    e_oyun_gorseli
   } = req.body;
 
   if (!e_id) {
@@ -164,6 +201,10 @@ app.post('/oyunListesi/oyunDuzenle', (req, res) => {
         kayit.e_durum               = e_durum               ?? kayit.e_durum;
         kayit.e_aciklama            = e_aciklama            ?? kayit.e_aciklama;
         kayit.e_eklenme_tarihi      = e_eklenme_tarihi      ?? kayit.e_eklenme_tarihi;
+        if (e_oyun_gorseli && Array.isArray(e_oyun_gorseli)) {
+          kayit.e_oyun_gorseli = [...kayit.e_oyun_gorseli, ...e_oyun_gorseli];
+        }
+        kayit.e_boyut               = e_boyut               ?? kayit.e_boyut;
         kayit.e_oyun_kategorisi     = e_oyun_kategorisi     ?? kayit.e_oyun_kategorisi;
         kayitBulundu = true;
       }
@@ -226,17 +267,21 @@ app.post('/oyunListesi/oyunSil', (req, res) => {
 
 
 // TODO resim yükleme servisi düzenlenecek!
-return false
-app.post('/diger/resimYukle', upload.single('e_resim'), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({ message: 'Dosya yüklenemedi.' });
+// Çoklu resim yükleme (max 10 dosya)
+app.post('/diger/resimYukle', upload.array('e_oyun_gorseli', 10), (req, res) => {
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).json({ message: 'Hiçbir dosya yüklenemedi.' });
   }
-  res.status(200).json({ 
-    message: 'Dosya yüklendi.',
-    filePath: '/data/DATA/uploads/' + req.file.filename
+
+  // Yüklenen tüm dosyaların yollarını dizide topla
+  const filePaths = req.files.map(file => '/data/DATA/uploads/' + file.filename);
+
+  res.status(200).json({
+    message: 'Dosyalar başarıyla yüklendi.',
+    filePaths // frontend'e gönderiyoruz
   });
 });
-return true;
+
 
 app.listen(PORT, () => {
   console.log(`🚀 Server ${PORT} portunda çalışıyor`);

@@ -239,3 +239,49 @@
   color: #0d0c22;
   font-family: 'Poppins', sans-serif;
 }
+/* Tab Butonları */
+.modal-tabs {
+  display: flex;
+  border-bottom: 1px solid #d0d0d0; /* hafif gri, modal temasına uyumlu */
+  margin-bottom: 16px;
+  gap: 8px;
+}
+
+.modal-tabs .tab-link {
+  background: #f3f3f4; /* modal input arkaplanıyla uyumlu */
+  border: 1px solid #c0c0c0; /* hafif koyu gri border */
+  border-bottom: none; /* aktif tab altı border çıkmasın */
+  padding: 10px 16px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0c0c1e; /* modal text rengi */
+  border-radius: 5px 5px 0 0; /* üst köşeleri yuvarlat */
+  transition: all 0.2s ease;
+}
+
+.modal-tabs .tab-link.active {
+  background: #fff; /* aktif tab beyaz */
+  border-color: #a0a0a0; /* biraz koyu border */
+  border-bottom: 1px solid #fff; /* içerik ile birleşsin */
+  font-weight: 600;
+  color: #0c0c1e;
+}
+
+.modal-tabs .tab-link:hover {
+  background: #e8e8e8; /* hover gri tonu */
+  color: #0c0c1e;
+}
+
+/* Tab İçerikleri */
+.tab-content {
+  display: none;
+  background: #fff; /* içerik beyaz */
+  border: 1px solid #d0d0d0; /* hafif gri border */
+  border-radius: 0 0 8px 8px;
+  padding: 12px;
+}
+
+.tab-content.active {
+  display: block;
+}

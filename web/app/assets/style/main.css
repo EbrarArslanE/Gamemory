@@ -501,9 +501,13 @@ body {
   background-color: #2ba972;
 }
 .status.disabled {
-  color: #59719d;
-  background-color: rgba(89, 113, 157, 0.2);
+  color: #ff4d4d; /* kırmızı yazı rengi */
+  background-color: rgba(255, 77, 77, 0.2); /* açık kırmızı arka plan */
+  border-radius: 4px; /* dilersen ufak bir köşe yuvarlama ekleyebilirsin */
+  padding: 2px 6px; /* ufak padding ile daha güzel görünür */
+  font-weight: bold;
 }
+
 .status.disabled:before {
   background-color: #59719d;
 }
@@ -532,7 +536,6 @@ body {
   position: relative;
 }
 .gridView .products-row:hover {
-  transform: scale(1.01);
   box-shadow: var(--filter-shadow);
 }
 .gridView .products-row:hover .cell-more-button {

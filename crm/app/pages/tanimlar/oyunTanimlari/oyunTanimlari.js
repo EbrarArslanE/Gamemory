@@ -78,6 +78,7 @@ async function modalDuzenle(e_id) {
     document.getElementById('e_eklenme_tarihi').value = kayit.e_eklenme_tarihi;
     document.getElementById('e_aciklama').value = kayit.e_aciklama;
     document.getElementById('e_oyun_kategorisi').value = kayit.e_oyun_kategorisi;
+    document.getElementById('e_boyut').value = kayit.e_boyut;
     document.getElementById('e_durum').value = kayit.e_durum;
 
     openModal();
@@ -127,14 +128,54 @@ async function islemiKaydet() {
   const e_durum_value = document.getElementById('e_durum').value;
   if (!e_durum_value) return toastr.warning("Lütfen oyun durumunu seçiniz.", "Uyarı!");
 
+  // 🎮 Oyun bilgileri
   const oyunKaydet = {
     e_oyun_adi: document.getElementById('e_oyun_adi').value.trim(),
     e_oyun_indirme_linki: document.getElementById('e_oyun_indirme_linki').value.trim(),
     e_eklenme_tarihi: document.getElementById('e_eklenme_tarihi').value.trim(),
     e_aciklama: document.getElementById('e_aciklama').value.trim(),
+    e_boyut: document.getElementById('e_boyut').value.trim(),
     e_oyun_kategorisi: document.getElementById('e_oyun_kategorisi').value.trim(),
     e_durum: e_durum_value
   };
+
+  // 🖼️ Çoklu resim yükleme
+  const fileInput = document.getElementById('e_oyun_gorseli');
+  const files = fileInput?.files;
+  let resimYollari = [];
+
+  if (files && files.length > 0) {
+    const formData = new FormData();
+
+    for (let i = 0; i < files.length; i++) {
+      formData.append('e_oyun_gorseli', files[i]); // çoklu dosya için
+    }
+
+    try {
+      const uploadRes = await fetch('/diger/resimYukle', {
+        method: 'POST',
+        body: formData
+      });
+
+      const uploadData = await uploadRes.json();
+
+      if (!uploadRes.ok) {
+        toastr.error("Resim(ler) yükleme başarısız: " + uploadData.message, "Hata!");
+        return;
+      }
+
+      // backend birden fazla dosya döndürüyorsa filePaths, yoksa tekil filePath
+      resimYollari = uploadData.filePaths || [uploadData.filePath];
+
+    } catch (err) {
+      console.error("Resim yükleme hatası:", err);
+      toastr.error("Resim(ler) yüklenirken hata oluştu.", "Hata!");
+      return;
+    }
+  }
+
+  // 🎯 Resim yollarını nesneye ekle
+  oyunKaydet.e_oyun_gorseli = resimYollari;
 
   if (islemTipi === 'duzenle') oyunKaydet.e_id = seciliID;
 
@@ -165,6 +206,10 @@ async function islemiKaydet() {
     console.error("İşlem hatası:", err);
     toastr.error("Bir hata oluştu. Lütfen tekrar deneyin.", "Hata!");
   }
+}
+
+function islemTipiYazdir(params) {
+  document.getElementById('islem-tipi').textContent = islemTipi === 'ekle' ? 'Yeni Oyun Ekle' : 'Oyun Düzenle';
 }
 
 // -------------------------- Silme --------------------------
@@ -217,5 +262,67 @@ async function oyunSil(e_id) {
       text: 'Silme işleminde bir hata oluştu.',
       confirmButtonColor: '#1C1C2E'
     });
+  }
+}
+
+// Tab geçişi
+document.querySelectorAll('.tab-link').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    document.querySelectorAll('.tab-link').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+    document.getElementById(tab).classList.add('active');
+  });
+});
+
+// Seçilen görselleri göstermek
+function secilenGorselleriGoster(gorseller) {
+  const container = document.getElementById('secilenGorsellerContainer');
+  container.innerHTML = '';
+  if (!gorseller || gorseller.length === 0) return;
+  gorseller.forEach(url => {
+    const imgWrapper = document.createElement('div');
+    imgWrapper.style.width = '80px';
+    imgWrapper.style.height = '80px';
+    imgWrapper.style.position = 'relative';
+    imgWrapper.style.border = '1px solid #ccc';
+    imgWrapper.style.borderRadius = '5px';
+    const img = document.createElement('img');
+    img.src = url;
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.objectFit = 'cover';
+    imgWrapper.appendChild(img);
+    container.appendChild(imgWrapper);
+  });
+}
+
+// Modal açılırken (düzenleme için)
+function modalAc(islemTipi, seciliOyun = null) {
+  document.getElementById('oyunModal').style.display = 'block';
+  if (islemTipi === 'duzenle' && seciliOyun) {
+    // inputları doldur
+    document.getElementById('e_oyun_adi').value = seciliOyun.e_oyun_adi;
+    document.getElementById('e_durum').value = seciliOyun.e_durum;
+    document.getElementById('e_eklenme_tarihi').value = seciliOyun.e_eklenme_tarihi;
+    document.getElementById('e_oyun_indirme_linki').value = seciliOyun.e_oyun_indirme_linki;
+    document.getElementById('e_boyut').value = seciliOyun.e_boyut || '';
+    document.getElementById('e_oyun_kategorisi').value = seciliOyun.e_oyun_kategorisi;
+    document.getElementById('e_aciklama').value = seciliOyun.e_aciklama || '';
+
+    // seçilen görselleri göster
+    function gorselleriGoster(gorseller) {
+  const container = document.querySelector('.gorsel-listesi');
+  container.innerHTML = ''; // önce temizle
+
+  gorseller.forEach(src => {
+    const img = document.createElement('img');
+    img.src = src; // backend’den gelen yol
+    img.alt = 'Oyun Görseli';
+    img.classList.add('duzenleme-gorseli'); // CSS için
+    container.appendChild(img);
+  });
+}
   }
 }

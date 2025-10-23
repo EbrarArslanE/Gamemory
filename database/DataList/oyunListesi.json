@@ -1,11 +1,33 @@
 [
   {
-    "e_id": "1",
-    "e_oyun_adi": "asd",
-    "e_oyun_indirme_linki": "wfwefwefwefew",
-    "e_durum": "Pasif",
-    "e_aciklama": "sdvfdsfsdfs",
+    "e_id": "3",
+    "e_oyun_adi": "test",
+    "e_oyun_indirme_linki": "test.com",
+    "e_durum": "Aktif",
+    "e_aciklama": "test",
     "e_oyun_kategorisi": "Aksiyon",
-    "e_eklenme_tarihi": "2025-10-03"
+    "e_eklenme_tarihi": "2025-10-03",
+    "e_oyun_gorseli": [
+      "/data/DATA/uploads/1761213566484-WhatsApp_Image_2025-10-14_at_10.08.00.jpeg",
+      "/data/DATA/uploads/1761213566507-WhatsApp_Image_2025-10-14_at_10.04.32_(1).jpeg",
+      "/data/DATA/uploads/1761213566512-WhatsApp_Image_2025-10-14_at_10.04.32.jpeg",
+      "/data/DATA/uploads/1761213881197-formula-1.png",
+      "/data/DATA/uploads/1761213881216-hd-f1-the-official-formula-1-transparent-png-701751712229525ajvwddtfme.png"
+    ],
+    "e_boyut": "50gb"
+  },
+  {
+    "e_id": "4",
+    "e_oyun_adi": "test2",
+    "e_oyun_indirme_linki": "tests.cpom",
+    "e_durum": "Aktif",
+    "e_aciklama": "test",
+    "e_oyun_kategorisi": "Aksiyon",
+    "e_boyut": "10 kb",
+    "e_eklenme_tarihi": "2020-05-02",
+    "e_oyun_gorseli": [
+      "/data/DATA/uploads/1761213917186-formula-1.png",
+      "/data/DATA/uploads/1761213917210-hd-f1-the-official-formula-1-transparent-png-701751712229525ajvwddtfme.png"
+    ]
   }
 ]

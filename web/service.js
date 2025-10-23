@@ -13,6 +13,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'app')));
 
 app.get('/', (req, res) => {res.sendFile(path.join(__dirname, 'app/pages/anasayfa/anasayfa.html'));});
+app.use('/data/DATA/uploads', express.static(path.join(__dirname, '../database/Uploads')));
+
 
 // app.use('/oyunTanimlari', express.static(path.join(__dirname, 'app/pages/tanimlar/oyunTanimlari')));
 
