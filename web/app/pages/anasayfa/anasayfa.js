@@ -53,7 +53,7 @@ data.forEach(oyun => {
     <div class="product-cell price"><span class="cell-label">Açıklama:</span>${oyun.e_aciklama}</div>
     <div class="product-cell price">
       <div class="w-100 d-flex items-center justify-center">
-        <button class="button" type="button">
+        <button class="button" type="button" onClick="oyunDetaySayfasinaGit(${JSON.stringify(oyun).replace(/"/g, '&quot;')})">
           <span class="button__text">İndir</span>
           <span class="button__icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 35 35" id="bdd05811-e15d-428c-bb53-8661459f9307" data-name="Layer 2" class="svg">
@@ -74,4 +74,11 @@ data.forEach(oyun => {
     console.error("Fetch Hatası:", err);
     alert("Oyun listesi yüklenirken bir hata oluştu.");
   }
+}
+
+function oyunDetaySayfasinaGit(secilenKayit) {
+  const id = secilenKayit.e_id;
+  window.location.href = '/oyunDetay?id=' + id;
+
+  console.log(secilenKayit);
 }
