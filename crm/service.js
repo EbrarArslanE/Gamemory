@@ -237,9 +237,7 @@ app.post('/oyunListesi/oyunSil', (req, res) => {
   }
 
   fs.readFile(OYUN_SORGU, 'utf8', (err, data) => {
-    if (err) {
-      return res.status(500).json({ hata: 'Veriler okunamıyor.' });
-    }
+    if (err) return res.status(500).json({ hata: 'Veriler okunamıyor.' });
 
     let urunListesi;
     try {
@@ -248,22 +246,46 @@ app.post('/oyunListesi/oyunSil', (req, res) => {
       return res.status(500).json({ hata: 'Veri formatı hatalı.' });
     }
 
-    // e_id'ye uymayanları filtrele, yani seçilen ürünü çıkar
+    // Silinecek oyunu bul
+    const oyun = urunListesi.find(kayit => String(kayit.e_id) === String(e_id));
+    if (!oyun) return res.status(404).json({ hata: 'Silinecek kayıt bulunamadı.' });
+
+    // JSON’dan sil
     const yeniListe = urunListesi.filter(kayit => String(kayit.e_id) !== String(e_id));
-
-    if (yeniListe.length === urunListesi.length) {
-      return res.status(404).json({ hata: 'Silinecek kayıt bulunamadı.' });
-    }
-
     fs.writeFile(OYUN_SORGU, JSON.stringify(yeniListe, null, 2), err => {
-      if (err) {
-        return res.status(500).json({ hata: 'Silme işlemi sırasında hata oluştu.' });
-      }
+      if (err) return res.status(500).json({ hata: 'Silme işlemi sırasında hata oluştu.' });
 
-      res.json({ mesaj: 'Ürün başarıyla silindi.' });
+      // Kullanılmayan görselleri temizle
+      const uploadsDir = path.join(__dirname, '..', 'database/Uploads'); 
+
+      // JSON’da halen kullanılan görselleri topla
+      const usedImages = new Set();
+      yeniListe.forEach(o => {
+        if (o.e_oyun_gorseli) {
+          o.e_oyun_gorseli.forEach(imgPath => usedImages.add(path.basename(imgPath)));
+        }
+      });
+
+      fs.readdir(uploadsDir, (err, files) => {
+        if (err) console.log("Klasör okunamadı:", err);
+        else {
+          files.forEach(file => {
+            if (!usedImages.has(file)) {
+              const filePath = path.join(uploadsDir, file);
+              fs.unlink(filePath, err => {
+                if (err) console.log("Dosya silinemedi:", filePath, err);
+                else console.log("Dosya silindi:", filePath);
+              });
+            }
+          });
+        }
+      });
+
+      res.json({ mesaj: 'Ürün ve kullanılmayan görseller başarıyla silindi.' });
     });
   });
 });
+
 
 
 // TODO resim yükleme servisi düzenlenecek!
