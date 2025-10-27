@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+	<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+	<link rel="stylesheet" href="/assets/style/main.css">
+	<link rel="stylesheet" href="/assets/style/resim-yukle.css">
+	<link rel="stylesheet" href="/assets/style/table.css">
+	<link rel="stylesheet" href="/assets/style/settings.css">
+	<link rel="stylesheet" href="/assets/style/modal.css">
+  <link rel="shortcut icon" href="/assets/images/gamepad-line.svg" type="image/x-icon">
+	<title>AdminHub</title>
+</head>
+<body>
+	<section id="sidebar">
+	</section>
+
+  <section id="content">
+    <nav>
+        <i class='bx bx-menu bx-sm' ></i>
+        <a href="#" class="nav-link">Categories</a>
+        <form action="#">
+            <div class="form-input">
+                <input type="search" placeholder="Search...">
+                <button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
+            </div>
+        </form>
+        <input type="checkbox" class="checkbox" id="switch-mode" hidden />
+      
+        <a href="#" class="notification" id="notificationIcon">
+            <i class='bx bxs-bell bx-tada-hover' ></i>
+            <span class="num">8</span>
+        </a>
+        <div class="notification-menu" id="notificationMenu">
+            <ul>
+                <li>Bildirimler buraya listelenecek</li>
+            </ul>
+        </div>
+      
+        <!-- Profile Menu -->
+        <a href="#" class="profile" id="profileIcon">
+            <img src="https://placehold.co/600x400/png" alt="Profile">
+        </a>
+        <div class="profile-menu" id="profileMenu">
+            <ul>
+                <li><a href="#">My Profile</a></li>
+                <li><a href="#">Settings</a></li>
+                <li><a href="#">Log Out</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+			<div class="head-title">
+				<div class="left">
+					<h1>Kategori Tanımları</h1>
+					<ul class="breadcrumb">
+						<li>
+							<a href="#">Kategori Tanımları</a>
+						</li>
+						<li><i class='bx bx-chevron-right' ></i></li>
+						<li>
+							<a class="active" href="#">Kategori Tanımları</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="table-responsive">
+        <table class="table-custom">
+          <thead>
+            <tr>
+              <th>Oyun Adı</th>
+              <th>Durum</th>
+              <th class="d-flex gap-2 flex-row items-center justify-center"><a href="#" class="btn btn-add w-100"><i class="bx bx-plus"></i> Yeni Kayıt Ekle</a></th>
+            </tr>
+          </thead>
+          <tbody id="kategori-listesi">
+            <!-- Oyun verileri buraya yüklenecek -->
+          </tbody>
+        </table>
+      </div>
+
+		</main>
+	</section>
+
+	<!-- Modal Arkaplan -->
+<div id="kategoriModal" class="modal">
+  <div class="modal-content normal">
+    
+    <h2>değişecek</h2>
+    <!-- Tab içerikleri -->
+      <form id="oyunForm">
+        <div class="w-100 d-flex flex-col gap-2">
+          <div class="d-flex gap-2 w-100 flex-col justify-start items-start">
+            <label for="e_kategori_adi">Kategori Adı: <span style="color:red;">*</span></label>
+            <input placeholder="Kategori Adı Giriniz." id="e_kategori_adi" type="text" class="input">
+          </div>
+  
+            <div class="d-flex gap-2 flex-col justify-start items-start">
+              <label for="e_durum">Durum: <span style="color:red;">*</span></label>
+              <select name="e_durum" id="e_durum">
+                <option value="Aktif">Aktif</option>
+                <option value="Pasif">Pasif</option>
+              </select>
+            </div>
+        </div>  
+
+      </form>
+      <div class="modal-buttons">
+        <button type="button" class="btn btn-add" onclick="islemiKaydet()"><i class='bx bx-save'></i> Kaydet</button>
+        <button type="button" class="btn btn-delete close"><i class='bx bx-x'></i> İptal</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</div>
+
+  <script src="/pages/tanimlar/kategoriTanimlari/kategoriTanimlari.js"></script>
+  <script src="/assets/scripts/sidebar.js"></script>
+	<script src="/assets/scripts/router.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+</body>
+</html>

@@ -17,8 +17,10 @@ app.get('/', (req, res) => {res.sendFile(path.join(__dirname, 'app/pages/anasayf
 app.use('/data/DATA/uploads', express.static(path.join(__dirname, '../database/Uploads')));
 
 app.use('/oyunTanimlari', express.static(path.join(__dirname, 'app/pages/tanimlar/oyunTanimlari')));
+app.use('/kategoriTanimlari', express.static(path.join(__dirname, 'app/pages/tanimlar/kategoriTanimlari')));
 
 const OYUN_SORGU = path.join(__dirname, '../database/DataList/oyunListesi.json');
+const KATEGORI_SORGU = path.join(__dirname, '../database/DataList/kategoriListesi.json');
 
 
 // fs.readFile(<sorguyu buraya yaz kontrol için>, 'utf8', (err, data) => {
@@ -49,6 +51,7 @@ const upload = multer({ storage });
 
 // ID dosya yolu
 const OYUN_ID_OLUSTUR  = path.join(__dirname, '../database/ID_List/oyunID.txt');
+const KATEGORI_ID_OLUSTUR  = path.join(__dirname, '../database/ID_List/kategoriID.txt');
 
 //! ID ÜRET 
 async function GET_OYUN_ID() {
@@ -76,11 +79,47 @@ async function GET_OYUN_ID() {
     throw err;
   }
 }
+async function GET_KATEGORI_ID() {
+  try {
+    let data;
+    try {
+      data = await fs.promises.readFile(KATEGORI_ID_OLUSTUR, 'utf8');
+    } catch (err) {
+      if (err.code === 'ENOENT') {
+        await fs.promises.writeFile(KATEGORI_ID_OLUSTUR, '1', 'utf8');
+        return 1;
+      }
+      throw err;
+    }
+
+    let currentId = parseInt(data, 10);
+    if (isNaN(currentId)) currentId = 0;
+
+    const newId = currentId + 1;
+    await fs.promises.writeFile(KATEGORI_ID_OLUSTUR, newId.toString(), 'utf8');
+    return newId;
+
+  } catch (err) {
+    console.error('ID üretme hatası:', err);
+    throw err;
+  }
+}
 
 // ! LİSTELEME
 app.get('/oyunListesi/oyunListele', async (req, res) => {
   try {
     const data = await fs.promises.readFile(OYUN_SORGU, 'utf8'); // burası promise
+    const jsonData = JSON.parse(data || '[]'); // dosya boşsa []
+    res.json(jsonData);
+  } catch (err) {
+    console.error('Listeleme hatası:', err);
+    res.json([]); // hata olsa bile boş array dön
+  }
+});
+
+app.get('/kategoriTanimlari/kategoriListele', async (req, res) => {
+  try {
+    const data = await fs.promises.readFile(KATEGORI_SORGU, 'utf8'); // burası promise
     const jsonData = JSON.parse(data || '[]'); // dosya boşsa []
     res.json(jsonData);
   } catch (err) {
@@ -160,6 +199,43 @@ app.post('/oyunListesi/oyunEkle', async (req, res) => {
   }
 });
 
+app.post('/kategoriTanimlari/kategoriEkle', async (req, res) => {
+  const { e_kategori_adi, e_durum } = req.body;
+
+  if (!e_kategori_adi || !e_durum) {
+    return res.status(400).json({ hata: 'Eksik Kategori bilgisi' });
+  }
+
+  try {
+    const yeniID = await GET_KATEGORI_ID(); // ✅ callback değil await kullan
+
+    const yeniKategoriTanimi = {
+      e_id: String(yeniID),
+      e_kategori_adi,
+      e_durum
+    };
+
+    let kategoriTanimlari = [];
+
+    try {
+      const data = await fs.promises.readFile(KATEGORI_SORGU, 'utf8');
+      if (data) kategoriTanimlari = JSON.parse(data);
+    } catch (err) {
+      console.warn('KATEGORI_SORGU dosyası okunamadı, yeni oluşturulacak.');
+    }
+
+    kategoriTanimlari.push(yeniKategoriTanimi);
+
+    await fs.promises.writeFile(KATEGORI_SORGU, JSON.stringify(kategoriTanimlari, null, 2), 'utf8');
+
+    console.log('Kategori eklendi:', yeniKategoriTanimi);
+    res.json({ mesaj: 'Kategori başarıyla oluşturuldu!', e_id: yeniID });
+
+  } catch (err) {
+    console.error('Kategori ekleme hatası:', err);
+    res.status(500).json({ hata: 'Kategori eklenirken hata oluştu.' });
+  }
+});
 
 
 //! DÜZENLEME
@@ -228,6 +304,56 @@ app.post('/oyunListesi/oyunDuzenle', (req, res) => {
   });
 });
 
+app.post('/kategoriTanimlari/kategoriDuzenle', (req, res) => {
+  const {
+    e_id,             
+    e_kategori_adi, 
+    e_durum
+  } = req.body;
+
+  if (!e_id) {
+    return res.status(400).json({ Hata: 'e_id bulunamıyor.' });
+  }
+
+  fs.readFile(KATEGORI_SORGU, 'utf-8', (err, data) => {
+    if (err) {
+      return res.status(500).json({ Hata: 'Veriler okunamıyor.' });
+    }
+
+    let veriListesi;
+    try {
+      veriListesi = JSON.parse(data);   // ✅ tek parse
+    } catch (parseErr) {
+      return res.status(500).json({ Hata: 'Veri formatı hatalı.' });
+    }
+
+    let kayitBulundu = false;
+
+    const duzenlenmisListe = veriListesi.map(kayit => {
+      if (String(kayit.e_id) === String(e_id)) {   // ✅ doğru karşılaştırma
+        kayit.e_kategori_adi  = e_kategori_adi  ?? kayit.e_kategori_adi;
+        kayit.e_durum         = e_durum         ?? kayit.e_durum;
+        kayitBulundu = true;
+      }
+      return kayit;
+    });
+
+    if (!kayitBulundu) {
+      return res.status(404).json({ Hata: 'Düzenlemeye çalıştığınız kayıt bulunamadı.' });
+    }
+
+    fs.writeFile(
+      KATEGORI_SORGU,
+      JSON.stringify(duzenlenmisListe, null, 2),
+      err => {
+        if (err) {
+          return res.status(500).json({ Hata: 'İşlem kaydedilirken bir sorun oluştu: Düzenleme başarısız.' });
+        }
+        res.json({ Mesaj: 'İşlem Başarılı.' });
+      }
+    );
+  });
+});
 //! SİLME
 app.post('/oyunListesi/oyunSil', (req, res) => {
   const { e_id } = req.body;
@@ -280,6 +406,36 @@ app.post('/oyunListesi/oyunSil', (req, res) => {
           });
         }
       });
+
+      res.json({ mesaj: 'Ürün ve kullanılmayan görseller başarıyla silindi.' });
+    });
+  });
+});
+app.post('/kategoriTanimlari/kategoriSil', (req, res) => {
+  const { e_id } = req.body;
+
+  if (!e_id) {
+    return res.status(400).json({ hata: 'e_id zorunlu veya eksik.' });
+  }
+
+  fs.readFile(KATEGORI_SORGU, 'utf8', (err, data) => {
+    if (err) return res.status(500).json({ hata: 'Veriler okunamıyor.' });
+
+    let urunListesi;
+    try {
+      urunListesi = JSON.parse(data);
+    } catch (parseErr) {
+      return res.status(500).json({ hata: 'Veri formatı hatalı.' });
+    }
+
+    // Silinecek oyunu bul
+    const oyun = urunListesi.find(kayit => String(kayit.e_id) === String(e_id));
+    if (!oyun) return res.status(404).json({ hata: 'Silinecek kayıt bulunamadı.' });
+
+    // JSON’dan sil
+    const yeniListe = urunListesi.filter(kayit => String(kayit.e_id) !== String(e_id));
+    fs.writeFile(KATEGORI_SORGU, JSON.stringify(yeniListe, null, 2), err => {
+      if (err) return res.status(500).json({ hata: 'Silme işlemi sırasında hata oluştu.' });
 
       res.json({ mesaj: 'Ürün ve kullanılmayan görseller başarıyla silindi.' });
     });

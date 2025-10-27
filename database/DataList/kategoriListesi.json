@@ -1,0 +1,12 @@
+[
+  {
+    "e_id": "1",
+    "e_kategori_adi": "Aksiyon",
+    "e_durum": "Aktif"
+  },
+  {
+    "e_id": "5",
+    "e_kategori_adi": "test",
+    "e_durum": "Aktif"
+  }
+]
