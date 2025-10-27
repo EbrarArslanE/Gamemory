@@ -29,5 +29,33 @@
       "/data/DATA/uploads/1761213917186-formula-1.png",
       "/data/DATA/uploads/1761213917210-hd-f1-the-official-formula-1-transparent-png-701751712229525ajvwddtfme.png"
     ]
+  },
+  {
+    "e_id": "5",
+    "e_oyun_adi": "test",
+    "e_oyun_indirme_linki": "test.com",
+    "e_durum": "Aktif",
+    "e_aciklama": "tst2",
+    "e_oyun_kategorisi": "Aksiyon",
+    "e_boyut": "30 gb",
+    "e_eklenme_tarihi": "2007-10-03",
+    "e_oyun_gorseli": [
+      "/data/DATA/uploads/1761545597258-WhatsApp_Image_2025-10-14_at_10.08.00.jpeg",
+      "/data/DATA/uploads/1761545597266-WhatsApp_Image_2025-10-14_at_10.04.32_(1).jpeg"
+    ]
+  },
+  {
+    "e_id": "6",
+    "e_oyun_adi": "test3",
+    "e_oyun_indirme_linki": "test.com",
+    "e_durum": "Aktif",
+    "e_aciklama": "test",
+    "e_oyun_kategorisi": "Macera",
+    "e_boyut": "50kb",
+    "e_eklenme_tarihi": "2025-10-03",
+    "e_oyun_gorseli": [
+      "/data/DATA/uploads/1761545737854-WhatsApp_Image_2025-10-14_at_10.08.00.jpeg",
+      "/data/DATA/uploads/1761545737858-plant2.png"
+    ]
   }
 ]

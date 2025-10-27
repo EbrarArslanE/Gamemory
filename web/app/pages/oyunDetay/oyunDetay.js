@@ -1,146 +1,77 @@
-$('.slider').each(function() {
-  var $this = $(this);
-  var $group = $this.find('.slide_group');
-  var $slides = $this.find('.slide');
-  var bulletArray = [];
-  var currentIndex = 0;
-  var timeout;
-  
-  function move(newIndex) {
-    var animateLeft, slideLeft;
-    
-    advance();
-    
-    if ($group.is(':animated') || currentIndex === newIndex) {
-      return;
-    }
-    
-    bulletArray[currentIndex].removeClass('active');
-    bulletArray[newIndex].addClass('active');
-    
-    if (newIndex > currentIndex) {
-      slideLeft = '100%';
-      animateLeft = '-100%';
-    } else {
-      slideLeft = '-100%';
-      animateLeft = '100%';
-    }
-    
-    $slides.eq(newIndex).css({
-      display: 'block',
-      left: slideLeft
-    });
-    $group.animate({
-      left: animateLeft
-    }, function() {
-      $slides.eq(currentIndex).css({
-        display: 'none'
-      });
-      $slides.eq(newIndex).css({
-        left: 0
-      });
-      $group.css({
-        left: 0
-      });
-      currentIndex = newIndex;
-    });
-  }
-  
-  function advance() {
-    clearTimeout(timeout);
-    timeout = setTimeout(function() {
-      if (currentIndex < ($slides.length - 1)) {
-        move(currentIndex + 1);
+$(document).ready(() => {
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const oyunId = urlParams.get('id');
+
+  async function oyunDetayGetir() {
+    try {
+      const res = await fetch('/oyunListesi/oyunListele');
+      if (!res.ok) throw new Error(res.status + ' ' + res.statusText);
+
+      const data = await res.json();
+      console.log("Fetch ile gelen data:", data);
+
+      let oyun;
+      if (Array.isArray(data)) {
+        oyun = data.find(o => o.e_id == oyunId);
       } else {
-        move(0);
+        oyun = data.e_id == oyunId ? data : null;
       }
-    }, 4000);
+
+      if (!oyun) {
+        console.log("Oyun bulunamadı 😕");
+        return;
+      }
+
+      console.log("Bulunan oyun:", oyun);
+
+      // Oyun detaylarını doldur
+      const adElem = document.getElementById("oyun-adi");
+      const kategoriElem = document.getElementById("oyun-kategori");
+      const boyutElem = document.getElementById("oyun-boyutu");
+      const durumElem = document.getElementById("oyun-durum");
+      const tarihElem = document.getElementById("oyun-yuklenme-tarihi");
+      const aciklamaElem = document.getElementById("oyun-aciklama");
+      const indirLink = document.getElementById("indir-link");
+
+      if(adElem) adElem.textContent = oyun.e_oyun_adi;
+      if(kategoriElem) kategoriElem.textContent = oyun.e_oyun_kategorisi;
+      if(boyutElem) boyutElem.textContent = oyun.e_boyut;
+      if(durumElem) durumElem.textContent = oyun.e_durum;
+      if(tarihElem) tarihElem.textContent = oyun.e_eklenme_tarihi;
+      if(aciklamaElem) aciklamaElem.textContent = oyun.e_aciklama;
+      if(indirLink) indirLink.href = oyun.e_oyun_indirme_linki;
+
+      // Slider görsellerini ekle
+      const $group = $('.slider .slide_group');
+      $group.empty();
+      $('.slide_buttons').empty();
+
+      if (oyun.e_oyun_gorseli && oyun.e_oyun_gorseli.length > 0) {
+        const baseUrl = window.location.origin; // resimlerin tam yolu için
+        oyun.e_oyun_gorseli.forEach(src => {
+          const fullSrc = src.startsWith('http') ? src : baseUrl + src;
+          const $slide = $('<div class="slide"><img src="' + fullSrc + '" alt="Oyun Görseli" style="width: 100%; height: auto; object-fit: cover;"></div>');
+          $group.append($slide);
+        });
+      }
+
+      // Slider’ı başlat
+      sliderBaslat();
+
+    } catch (err) {
+      console.error("Fetch Hatası:", err);
+      alert("Oyun detayları yüklenirken bir hata oluştu.");
+    }
   }
-  
-  $('.next_btn').on('click', function() {
-    if (currentIndex < ($slides.length - 1)) {
-      move(currentIndex + 1);
-    } else {
-      move(0);
-    }
-  });
-  
-  $('.previous_btn').on('click', function() {
-    if (currentIndex !== 0) {
-      move(currentIndex - 1);
-    } else {
-      move(3);
-    }
-  });
-  
-  $.each($slides, function(index) {
-    var $button = $('<a class="slide_btn">&bull;</a>');
-    
-    if (index === currentIndex) {
-      $button.addClass('active');
-    }
-    $button.on('click', function() {
-      move(index);
-    }).appendTo('.slide_buttons');
-    bulletArray.push($button);
-  });
-  
-  advance();
-});
 
-
-const urlParams = new URLSearchParams(window.location.search);
-const oyunId = urlParams.get('id');
-
-async function oyunDetayGetir() {
-  try {
-    const res = await fetch('/oyunListesi/oyunListele'); 
-    if (!res.ok) throw new Error(res.status + ' ' + res.statusText);
-
-    const data = await res.json();
-    console.log("Fetch ile gelen data:", data);
-
-    let oyun;
-    if (Array.isArray(data)) {
-      oyun = data.find(o => o.e_id == oyunId);
-    } else {
-      oyun = data.e_id == oyunId ? data : null;
-    }
-
-    if (!oyun) {
-      console.log("Oyun bulunamadı 😕");
-      return;
-    }
-
-    console.log("Bulunan oyun:", oyun);
-
-    // Oyun detaylarını doldur
-    document.getElementById("oyun-adi").textContent = oyun.e_oyun_adi;
-    document.getElementById("oyun-kategori").textContent = oyun.e_oyun_kategorisi;
-    document.getElementById("oyun-boyutu").textContent = oyun.e_boyut;
-    document.getElementById("oyun-durum").textContent = oyun.e_durum;
-    document.getElementById("oyun-yuklenme-tarihi").textContent = oyun.e_eklenme_tarihi;
-    document.getElementById("oyun-aciklama").textContent = oyun.e_aciklama;
-    document.getElementById("indir-link").href = oyun.e_oyun_indirme_linki;
-
-    // Slider görsellerini ekle
-    const $group = $('.slider .slide_group');
-    $group.empty();
-    $('.slide_buttons').empty();
-
-    if (oyun.e_oyun_gorseli && oyun.e_oyun_gorseli.length > 0) {
-      oyun.e_oyun_gorseli.forEach(src => {
-        const $slide = $('<div class="slide"><img src="' + src + '" alt="Oyun Görseli"></div>');
-        $group.append($slide);
-      });
-    }
-
-    // Slider kodunu başlat
+  function sliderBaslat() {
     $('.slider').each(function() {
       const $this = $(this);
       const $group = $this.find('.slide_group');
-      const $slides = $this.find('.slide');
-      if ($slides.length === 0) return; // boşsa hata verme
+      const $slides = $this.find('.slide'); // artık tüm resimler alınır
+      if ($slides.length === 0) return;
+
       const bulletArray = [];
       let currentIndex = 0;
       let timeout;
@@ -189,11 +120,8 @@ async function oyunDetayGetir() {
 
       advance();
     });
-
-  } catch (err) {
-    console.error("Fetch Hatası:", err);
-    alert("Oyun detayları yüklenirken bir hata oluştu.");
   }
-}
 
-oyunDetayGetir();
+  oyunDetayGetir();
+
+});
